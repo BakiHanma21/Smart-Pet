@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
-import { PetSearch } from "./components/PetSearch";
 import { UserProfile } from "./components/UserProfile";
 import { Messages } from "./components/Messages";
 import { PetProfile } from "./components/PetProfile";

@@ -185,11 +185,11 @@ export const SearchPet = () => {
               Vaccination Status
             </label>
             <select
-              value={filters.vaccination_status === undefined ? "" : filters.vaccination_status.toString()}
-              onChange={(e) => handleFilterChange("vaccination_status", e.target.value === "" ? undefined : e.target.value === "true")}
+              value={filters.vaccination_status?.toString() || ""}
+              onChange={(e) => handleFilterChange("vaccination_status", e.target.value === "" ? false : e.target.value === "true")}
               className="w-full border border-gray-600 bg-gray-800 text-white p-2 rounded focus:ring focus:ring-purple-500"
             >
-              <option value="">All</option>
+              <option value="">Any</option>
               <option value="true">Vaccinated</option>
               <option value="false">Not Vaccinated</option>
             </select>

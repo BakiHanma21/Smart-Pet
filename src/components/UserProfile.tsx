@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../supabase-client";
 import { useAuth } from "../context/AuthContext";
 import { FaMedal, FaUser, FaMapMarkerAlt, FaPaw } from "react-icons/fa";
@@ -71,7 +71,6 @@ const fetchUserBadges = async (userId: string): Promise<Badge[]> => {
 
 export const UserProfile = () => {
   const { user } = useAuth();
-  const queryClient = useQueryClient();
 
   const { data: userData, isLoading: userLoading, error: userError } = useQuery<UserData, Error>({
     queryKey: ["userData", user?.id],

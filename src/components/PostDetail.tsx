@@ -9,19 +9,15 @@ import { MdPets } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-interface Props {
-  postId: number;
-}
-
-const fetchPostById = async (id: number): Promise<Post> => {
+const fetchPostById = async (postId: number): Promise<Post> => {
   const { data, error } = await supabase
-    .from("post")
+    .from("posts")
     .select("*")
-    .eq("id", id)
+    .eq("id", postId)
     .single();
-  if (error) throw new Error(error.message);
 
-  return data as Post;
+  if (error) throw error;
+  return data;
 };
 
 const deletePost = async (post: Post) => {
@@ -84,13 +80,13 @@ const deletePost = async (post: Post) => {
   }
 };
 
-export const PostDetail = ({ postId }: Props) => {
+export const PostDetail = ({ postId }: { postId: string }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { user } = useAuth();
   const { data, error, isLoading } = useQuery<Post, Error>({
     queryKey: ["PostID", postId],
-    queryFn: () => fetchPostById(postId),
+    queryFn: () => fetchPostById(parseInt(postId)),
   });
 
   const handleDelete = async () => {
@@ -224,13 +220,13 @@ export const PostDetail = ({ postId }: Props) => {
         {data?.additional_photos && data.additional_photos.length > 0 && (
           <div className="mb-6">
             <h3 className="text-xl font-semibold text-white mb-3">Additional Photos</h3>
-            <div className="grid grid-cols-3 gap-4">
-              {data.additional_photos.map((photo, index) => (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {data.additional_photos.map((photo: string, index: number) => (
                 <img
                   key={index}
                   src={photo}
-                  alt={`${data.name} - Photo ${index + 1}`}
-                  className="w-full h-48 object-cover rounded-lg shadow-md"
+                  alt={`Additional photo ${index + 1}`}
+                  className="w-full h-48 object-cover rounded-lg"
                 />
               ))}
             </div>
@@ -307,10 +303,10 @@ export const PostDetail = ({ postId }: Props) => {
           <div className="mb-6">
             <h3 className="text-xl font-semibold text-white mb-3">Temperament</h3>
             <div className="flex flex-wrap gap-2">
-              {data.temperament.map((trait, index) => (
+              {data.temperament.map((trait: string, index: number) => (
                 <span
                   key={index}
-                  className="px-3 py-1 bg-purple-500/20 rounded-full text-purple-300"
+                  className="px-2 py-1 bg-gray-800 rounded-full text-sm"
                 >
                   {trait}
                 </span>
@@ -342,13 +338,13 @@ export const PostDetail = ({ postId }: Props) => {
 
         {/* Like Button */}
         <div className="mt-4 flex items-center space-x-4">
-          <LikeButton postId={postId} />
+          <LikeButton postId={parseInt(postId)} />
         </div>
 
         {/* Comments Section */}
         <div className="mt-6 border-t border-gray-700 pt-4">
           <h3 className="text-xl font-semibold text-white mb-3">Comments</h3>
-          <CommentSection postId={postId} />
+          <CommentSection postId={parseInt(postId)} />
         </div>
       </div>
     </div>
