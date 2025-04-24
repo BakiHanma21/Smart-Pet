@@ -22,7 +22,7 @@ function App() {
   return (
     <div className="min-h-screen bg-black text-gray-100 transition-opacity duration-700">
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/Smart-Pet" element={<LandingPage />} />
         <Route
           path="*"
           element={

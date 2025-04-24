@@ -11,7 +11,7 @@ import { useAuth } from "../context/AuthContext";
 
 const fetchPostById = async (postId: number): Promise<Post> => {
   const { data, error } = await supabase
-    .from("posts")
+    .from("post")
     .select("*")
     .eq("id", postId)
     .single();
@@ -100,8 +100,9 @@ export const PostDetail = ({ postId }: { postId: string }) => {
 
     try {
       await deletePost(data);
+      // Invalidate queries and redirect to home
       queryClient.invalidateQueries({ queryKey: ["posts"] });
-      navigate("/");
+      navigate("/home", { replace: true });
     } catch (error) {
       console.error("Error deleting post:", error);
       alert("Failed to delete post. Please try again.");

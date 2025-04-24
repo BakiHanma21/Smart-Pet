@@ -80,12 +80,24 @@ const createPost = async (
   const { data, error } = await supabase
     .from("post")
     .insert({ 
-      ...post, 
+      name: post.name,
+      content: post.content,
       image_url: publicURLData.publicUrl,
-      additional_photos: additionalPhotosUrls,
+      avatar_url: post.avatar_url,
+      community_id: post.community_id,
+      age: post.age,
+      breed: post.breed,
+      vaccination_status: post.vaccination_status,
+      location: post.location,
+      user_id: post.user_id,
+      size: post.size,
+      temperament: post.temperament,
       health_info: updatedHealthInfo.trim(),
-      status: post.status || 'Available'
-    });
+      status: post.status || 'Available',
+      additional_photos: additionalPhotosUrls
+    })
+    .select('*')
+    .single();
 
   if (error) throw new Error(error?.message);
 
